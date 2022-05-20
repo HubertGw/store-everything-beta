@@ -1,0 +1,1 @@
+insert into Note values(1, 'Dom', '2022-05-12', 'Ken description', 'Notatka');

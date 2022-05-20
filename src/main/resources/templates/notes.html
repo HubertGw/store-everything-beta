@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org">
+<head>
+    <link href="webjars/bootstrap/4.4.1/css/bootstrap.css" rel="stylesheet" />
+    <script type="text/javascript" src="webjars/jquery/3.4.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/4.4.1/js/bootstrap.js"></script>
+    <script type="text/javascript" th:src="@{js/main.js}" src="../static/js/main.js"></script>
+    <meta charset="UTF-8">
+    <title>Notes</title>
+</head>
+<body>
+<h1>Notatki</h1>
+<div class="container">
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Utwórz notatkę</button>
+
+<table class="table table-striped">
+    <tr>
+        <td>Id</td>
+        <td>Tytuł</td>
+        <td>Opis</td>
+        <td>Kategoria</td>
+        <td>Data</td>
+        <td>Edit</td>
+        <td>Share</td>
+        <td>Open</td>
+        <td>Delete</td>
+    </tr>
+    <tr th:each = "note:${notes}">
+        <td th:text = "${note.id}">Id</td>
+        <td th:text = "${note.title}">Tytuł</td>
+        <td th:text = "${note.description}">Opis</td>
+        <td th:text = "${note.category}">Kategoria</td>
+        <td th:text = "${note.data}">Data</td>
+        <td><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-warning editButton">Edytuj</a></td>
+        <td><a class="btn btn-info">Udostępnij</a></td>
+        <td><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-outline-secondary openButton">Otwórz</a></td>
+        <td><a th:href="@{/delete/(id=${note.id})}" class="btn btn-danger deleteButton">Usuń</a></td>
+    </tr>
+</table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <form th:action="@{/addNew}" method="post">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Notatka</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-group">
+                    <label for="id" class="col-form-label">id:</label>
+                    <input type="text" class="form-control" id="idAdd" name="id">
+                </div>
+                <div class="form-group">
+                    <label for="title" class="col-form-label">Tytuł:</label>
+                    <input type="text" class="form-control" id="titleAdd" name="title">
+                </div>
+                <div class="form-group">
+                    <label for="description" class="col-form-label">Opis:</label>
+                    <input type="text" class="form-control" id="descriptionAdd" name="description">
+                </div>
+                <div class="form-group">
+                    <label for="category" class="col-form-label">Kategoria:</label>
+                    <select>
+                        <option name="category" th:each="category: ${categories}" th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="data" class="col-form-label">Data:</label>
+                    <input type="text" class="form-control" id="dataAdd" name="data">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Zamknij</button>
+                <button type="submit" class="btn btn-outline-success">Zapisz</button>
+            </div>
+        </div>
+
+    </div>
+    </form>
+</div>
+
+<div class="modal fade" id="editModal" role="dialog">
+    <form th:action="@{/save}" method="put">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Notatka</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="id" class="col-form-label">id:</label>
+                        <input type="text" class="form-control" id="idEdit" name="id">
+                    </div>
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Tytuł:</label>
+                        <input type="text" class="form-control" id="titleEdit" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Opis:</label>
+                        <input type="text" class="form-control" id="descriptionEdit" name="description">
+                    </div>
+                    <div class="form-group">
+                        <label for="category" class="col-form-label">Kategoria:</label>
+                        <input type="text" class="form-control" id="categoryEdit" name="category">
+                    </div>
+                    <div class="form-group">
+                        <label for="data" class="col-form-label">Data:</label>
+                        <input type="text" class="form-control" id="dataEdit" name="data">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Zamknij</button>
+                    <button type="submit" class="btn btn-outline-success">Zapisz</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog" id="deleteModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Potwierdź usunięcie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Czy na pewno chcesz usunąć notatkę?</p>
+            </div>
+            <div class="modal-footer">
+                <a href="" type="button" class="btn btn-danger" id="deleteId">Usuń</a>
+                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="openModal" role="dialog">
+    <form>
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Notatka</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="title" class="col-form-label">Tytuł:</label>
+                        <input type="text" class="form-control" id="titleOpen" name="title" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-form-label">Opis:</label>
+                        <input type="text" class="form-control" id="descriptionOpen" name="description" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="category" class="col-form-label">Kategoria:</label>
+                        <input type="text" class="form-control" id="categoryOpen" name="category" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="data" class="col-form-label">Data:</label>
+                        <input type="text" class="form-control" id="dataOpen" name="data" disabled>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Zamknij</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+</body>
+</html>
