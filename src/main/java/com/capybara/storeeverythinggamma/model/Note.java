@@ -5,6 +5,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.util.Date;
 @Entity
 public class Note {
@@ -12,8 +14,9 @@ public class Note {
     @Id
     @Column(name = "id", nullable = false)
     private Integer id;
-
+    @Size(min=3, max=20)
     private String title;
+    @Size(min=5, max=500)
     private String description;
     private String category;
 

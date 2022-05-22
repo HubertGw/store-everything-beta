@@ -11,10 +11,11 @@
 <body>
 <h1>Witaj na store everything!</h1>
 <ul>
-    <li sec:authorize="hasRole('ADMIN')"><a href="">Strona główna</a></li>
+    <li><a href="">Strona główna</a></li>
     <li><a href="notes">Notatki</a></li>
     <li><a href="categories">Kategorie</a></li>
     <li><a href="">Kontakt</a></li>
+    <li sec:authorize="hasRole('ADMIN')"><a href="http://localhost:8180/auth/admin/master/console/#/realms/StoreEverything">Zarządzaj użytkownikami</a></li>
 </ul>
 <a href="http://localhost:8180/auth/realms/StoreEverything/protocol/openid-connect/auth?client_id=account-console&redirect_uri=http%3A%2F%2Flocalhost%3A8180%2Fauth%2Frealms%2FStoreEverything%2Faccount%2F%23%2F&state=227ef7ff-8f1f-40e1-96b5-1ad2511d6572&response_mode=fragment&response_type=code&scope=openid&nonce=07e8fa46-563a-4165-8051-b23dfbd5def4&code_challenge=QeMJ2to1wrfiAmVxIlXrRGUh85Bm8sm4B2p_k8vEA00&code_challenge_method=S256" class="btn btn-outline-success">Logowanie</a>
 <a href="/logout" class="btn btn-outline-success">Wyloguj</a>

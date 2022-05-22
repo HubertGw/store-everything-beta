@@ -40,7 +40,7 @@ public class SecurityConfiguration extends KeycloakWebSecurityConfigurerAdapter 
         super.configure(http);
         http.authorizeRequests()
                 .antMatchers("/notes")
-                .hasAnyRole("ADMIN")
+                .hasAnyRole("ADMIN", "VIP", "USER")
                 .anyRequest()
                 .permitAll();
 

@@ -11,7 +11,8 @@
 <body>
 <h1>Notatki</h1>
 <div class="container">
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Utwórz notatkę</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" sec:authorize="hasRole('VIP')">Utwórz notatkę</button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" sec:authorize="hasRole('ADMIN')">Utwórz notatkę</button>
 
 <table class="table table-striped">
     <tr>
@@ -20,10 +21,13 @@
         <td>Opis</td>
         <td>Kategoria</td>
         <td>Data</td>
-        <td>Edit</td>
-        <td>Share</td>
+        <td sec:authorize="hasRole('VIP')">Edit</td>
+        <td sec:authorize="hasRole('ADMIN')">Edit</td>
+        <td sec:authorize="hasRole('VIP')">Share</td>
+        <td sec:authorize="hasRole('ADMIN')">Share</td>
         <td>Open</td>
-        <td>Delete</td>
+        <td sec:authorize="hasRole('VIP')">Delete</td>
+        <td sec:authorize="hasRole('ADMIN')">Delete</td>
     </tr>
     <tr th:each = "note:${notes}">
         <td th:text = "${note.id}">Id</td>
@@ -31,10 +35,13 @@
         <td th:text = "${note.description}">Opis</td>
         <td th:text = "${note.category}">Kategoria</td>
         <td th:text = "${note.data}">Data</td>
-        <td><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-warning editButton">Edytuj</a></td>
-        <td><a class="btn btn-info">Udostępnij</a></td>
+        <td sec:authorize="hasRole('VIP')"><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-warning editButton">Edytuj</a></td>
+        <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-warning editButton">Edytuj</a></td>
+        <td sec:authorize="hasRole('VIP')"><a class="btn btn-info">Udostępnij</a></td>
+        <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-info">Udostępnij</a></td>
         <td><a th:href="@{/onenote/(id=${note.id})}" class="btn btn-outline-secondary openButton">Otwórz</a></td>
-        <td><a th:href="@{/delete/(id=${note.id})}" class="btn btn-danger deleteButton">Usuń</a></td>
+        <td sec:authorize="hasRole('VIP')"><a th:href="@{/delete/(id=${note.id})}" class="btn btn-danger deleteButton">Usuń</a></td>
+        <td sec:authorize="hasRole('ADMIN')"><a th:href="@{/delete/(id=${note.id})}" class="btn btn-danger deleteButton">Usuń</a></td>
     </tr>
 </table>
 </div>
